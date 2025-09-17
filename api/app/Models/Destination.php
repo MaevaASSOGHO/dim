@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Destination extends Model {
-    protected $fillable = ['name','country','city','description','image_url','price','duration_days','min_persons',
-                            'max_persons','highlights','rating','ratings_count'];
+    protected $fillable = ['name','country','city','description','long_description','image_url','price','duration_days','min_persons',
+                            'max_persons','highlights','rating','ratings_count','category','group_size'];
                             
     public function trips(){ return $this->hasMany(Trip::class); }
 

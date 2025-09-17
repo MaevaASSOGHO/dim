@@ -14,10 +14,17 @@ class DemoSeeder extends Seeder
     {
        $abj = \App\Models\Destination::create([
         'name' => 'Abidjan',
-        'country' => 'Côte d’Ivoire',
+        'country' => 'Cote d\'Ivoire',
         'city' => 'Abidjan',
-        'description' => 'Capitale économique, lagune Ébrié, Plateau, Cocody…',
+        'description' => 'Capitale economique, lagune Ebrie, Plateau, Cocody...',
         'image_url' => 'https://example.com/abidjan.jpg',
+        'price' => 150000.00,
+        'duration_days' => 3,
+        'min_persons' => 1,
+        'max_persons' => 10,
+        'highlights' => 'Lagune Ebrie, Plateau, Cocody, Yopougon, Marcory',
+        'rating' => 4.5,
+        'ratings_count' => 25,
     ]);
 
     $trip = \App\Models\Trip::create([
@@ -31,8 +38,14 @@ class DemoSeeder extends Seeder
         'seats_total' => 20,
         'seats_left' => 20,
         'status' => 'available',
-        'summary' => 'Découverte de la ville, gastronomie, plages.',
+        'summary' => 'Decouverte de la ville, gastronomie, plages.',
         'cover_url' => 'https://example.com/abj-cover.jpg',
+        'duration_days' => 3,
+        'min_persons' => 1,
+        'max_persons' => 20,
+        'cities' => 'Abidjan, Plateau, Cocody, Yopougon',
+        'rating' => 4.2,
+        'ratings_count' => 15,
     ]);
 
     $booking = \App\Models\Booking::create([

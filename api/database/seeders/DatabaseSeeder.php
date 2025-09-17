@@ -19,6 +19,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        
+        // Seeders pour les 4 entités principales
+        $this->call(DestinationSeeder::class);
+        $this->call(EventSeeder::class);
+        $this->call(AccommodationSeeder::class);
+        $this->call(TourismPackageSeeder::class);
+        
+        // Garder le DemoSeeder pour les données de test
         $this->call(DemoSeeder::class);
     }
 }
