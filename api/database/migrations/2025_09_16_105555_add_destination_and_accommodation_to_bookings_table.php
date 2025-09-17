@@ -4,24 +4,31 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            // Ajouter les colonnes destination_id et accommodation_id
-            $table->foreignId('destination_id')->nullable()->after('trip_id')
-                  ->constrained('destinations')->onDelete('set null');
+            // Destination
+            $table->foreignId('destination_id')->nullable()->after('trip_id');
+            $table->foreign('destination_id')
+                ->references('id')
+                ->on('destinations')
+                ->nullOnDelete();
 
-            $table->foreignId('accommodation_id')->nullable()->after('destination_id')
-                  ->constrained('accommodations')->onDelete('set null');
+            // Accommodation
+            $table->foreignId('accommodation_id')->nullable()->after('destination_id');
+            $table->foreign('accommodation_id')
+                ->references('accommodation_id') // <- clé primaire personnalisée
+                ->on('accommodations')
+                ->nullOnDelete();
 
-            // Ajouter un index composite pour optimiser les recherches
+            // Index composite
             $table->index(['user_id', 'destination_id', 'accommodation_id']);
         });
+
     }
 
     /**

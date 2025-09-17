@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('destinations', function (Blueprint $table) {
-            $table->decimal('price', 10, 2)->after('description')->comment('Prix du séjour en euros');
-            $table->integer('duration_days')->after('price')->comment('Durée du séjour en jours');
-            $table->integer('min_persons')->after('duration_days')->comment('Nombre minimum de personnes');
-            $table->integer('max_persons')->after('min_persons')->comment('Nombre maximum de personnes');
-            $table->text('highlights')->after('max_persons')->comment('Points forts de la destination');
-            $table->decimal('rating', 2, 1)->default(0.0)->after('highlights')->comment('Note moyenne (0 à 5)');
-            $table->integer('ratings_count')->default(0)->after('rating')->comment('Nombre d\'évaluations');
+            $table->decimal('price', 10, 2)->after('description')->comment('Prix du séjour en euros')->nullable();
+            $table->integer('duration_days')->after('price')->comment('Durée du séjour en jours')->nullable();
+            $table->integer('min_persons')->after('duration_days')->comment('Nombre minimum de personnes')->nullable();
+            $table->integer('max_persons')->after('min_persons')->comment('Nombre maximum de personnes')->nullable();
+            $table->text('highlights')->after('max_persons')->comment('Points forts de la destination')->nullable();
+            $table->decimal('rating', 2, 1)->default(0.0)->after('highlights')->comment('Note moyenne (0 à 5)')->nullable();
+            $table->integer('ratings_count')->after('rating')->comment('Nombre d\'évaluations')->nullable()->default(0);
         });
     }
 
