@@ -6,11 +6,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { CardMedia } from "@/components/ui/card-media"
 import { useState } from "react"
+import { useDestinations } from "@/lib/api"
 
 export default function DestinationsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const { destinations, loading, error } = useDestinations()
 
-  const destinations = [
+  // Données de fallback en cas d'erreur API
+  const fallbackDestinations = [
     {
       id: 1,
       name: "Abidjan",
@@ -92,16 +95,19 @@ export default function DestinationsPage() {
     },
   ]
 
+  // Utiliser les données API ou les données de fallback
+  const currentDestinations = destinations.length > 0 ? destinations : fallbackDestinations
+
   const categories = [
-    { id: "all", label: "Toutes", count: destinations.length },
-    { id: "ville", label: "Villes", count: destinations.filter((d) => d.category === "ville").length },
-    { id: "plage", label: "Plages", count: destinations.filter((d) => d.category === "plage").length },
-    { id: "culturel", label: "Culturel", count: destinations.filter((d) => d.category === "culturel").length },
-    { id: "nature", label: "Nature", count: destinations.filter((d) => d.category === "nature").length },
+    { id: "all", label: "Toutes", count: currentDestinations.length },
+    { id: "ville", label: "Villes", count: currentDestinations.filter((d) => d.category === "ville").length },
+    { id: "plage", label: "Plages", count: currentDestinations.filter((d) => d.category === "plage").length },
+    { id: "culturel", label: "Culturel", count: currentDestinations.filter((d) => d.category === "culturel").length },
+    { id: "nature", label: "Nature", count: currentDestinations.filter((d) => d.category === "nature").length },
   ]
 
   const filteredDestinations =
-    selectedCategory === "all" ? destinations : destinations.filter((d) => d.category === selectedCategory)
+    selectedCategory === "all" ? currentDestinations : currentDestinations.filter((d) => d.category === selectedCategory)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -140,6 +146,21 @@ export default function DestinationsPage() {
           </div>
         </motion.div>
       </motion.section>
+
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#133e96]"></div>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mx-6 my-4">
+          <p className="text-red-600">Erreur lors du chargement des destinations: {error}</p>
+          <p className="text-sm text-red-500 mt-2">Affichage des données de démonstration</p>
+        </div>
+      )}
 
       {/* Filter Categories */}
       <section className="py-8 px-6 bg-white shadow-sm">

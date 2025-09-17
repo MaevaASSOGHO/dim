@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { motion, AnimatePresence } from "framer-motion"
 import { CardMedia } from "@/components/ui/card-media"
 import { useState } from "react"
+import { useAccommodations } from "@/lib/api"
 
 export default function HebergementsPage() {
   const [selectedType, setSelectedType] = useState("all")

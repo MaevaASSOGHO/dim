@@ -6,12 +6,15 @@ import { Card, CardContent } from "@/components/ui/card"
 import { motion, AnimatePresence } from "framer-motion"
 import { CardMedia } from "@/components/ui/card-media"
 import { useState } from "react"
+import { useEvents } from "@/lib/api"
 
 export default function EvenementsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null)
+  const { events, loading, error } = useEvents()
 
-  const events = [
+  // Données de fallback en cas d'erreur API
+  const fallbackEvents = [
     {
       id: 1,
       name: "Festival des Masques de Man",
