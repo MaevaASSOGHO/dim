@@ -5,13 +5,38 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { motion, AnimatePresence } from "framer-motion"
 import { CardMedia } from "@/components/ui/card-media"
-import { useState } from "react"
-import { useEvents } from "@/lib/api"
+import { useState, useEffect } from "react"
 
 export default function EvenementsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null)
-  const { events, loading, error } = useEvents()
+  const [events, setEvents] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('http://127.0.0.1:8000/api/events')
+        if (response.ok) {
+          const data = await response.json()
+          setEvents(data.data || [])
+        } else {
+          throw new Error('Failed to fetch events')
+        }
+        setError(null)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch events')
+        // Utiliser les données de fallback
+        setEvents(fallbackEvents)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
 
   // Données de fallback en cas d'erreur API
   const fallbackEvents = [

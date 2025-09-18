@@ -5,12 +5,37 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { CardMedia } from "@/components/ui/card-media"
-import { useState } from "react"
-import { useDestinations } from "@/lib/api"
+import { useState, useEffect } from "react"
 
 export default function DestinationsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const { destinations, loading, error } = useDestinations()
+  const [destinations, setDestinations] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('http://127.0.0.1:8000/api/destinations')
+        if (response.ok) {
+          const data = await response.json()
+          setDestinations(data.data || [])
+        } else {
+          throw new Error('Failed to fetch destinations')
+        }
+        setError(null)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch destinations')
+        // Utiliser les données de fallback
+        setDestinations(fallbackDestinations)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDestinations()
+  }, [])
 
   // Données de fallback en cas d'erreur API
   const fallbackDestinations = [
